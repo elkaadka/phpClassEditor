@@ -1,6 +1,6 @@
 {
-    "name": "kanel/phpfileseditor",
-    "description": "Edit php files by dynamically adding code",
+    "name": "kanel/phpclasseditor",
+    "description": "Edit php files / classes by dynamically adding code to them",
     "minimum-stability": "stable",
     "require" : {
         "php" : ">=7.0"
@@ -10,11 +10,12 @@
         "url" : "https://packagist.org/"
     } ],
     "require-dev" : {
-        "phpspec/phpspec": "^4.3"
+        "phpunit/phpunit": "^6.5"
     },
     "autoload" : {
         "psr-4" : {
-            "Kanel\\PhpEditor\\" : "src/"
+            "Kanel\\ClassEditor\\" : "src/",
+            "Kanel\\ClassEditor\\Tests\\" : "tests/"
         }
     },
     "authors" : [ {

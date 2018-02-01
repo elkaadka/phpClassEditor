@@ -1,13 +1,8 @@
 <?php
 
-namespace Kanel\PhpEditor\Components;
+namespace Kanel\ClassEditor\Components;
 
-class Component
+abstract class Component implements ComponentInterface
 {
-	protected $name;
 
-	final public function __construct(string $name)
-	{
-		$this->name = $name;
-	}
 }

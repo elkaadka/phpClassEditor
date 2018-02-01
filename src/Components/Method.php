@@ -1,59 +1,77 @@
 <?php
 
-namespace Kanel\PhpEditor\Components;
-
-use Kanel\PhpEditor\Exceptions\PhpFileEditorException;
+namespace Kanel\ClassEditor\Components;
 
 class Method extends Component
 {
-	protected $name;
-	protected $visibility;
+    protected $name;
+    protected $visibility;
 	protected $isStatic = false;
 	protected $isFinal = false;
 	protected $isAbstract = false;
 	protected $returnType;
-	protected $body;
-	protected $parameters = [];
+	protected $parameter = [];
+	protected $mightReturnNull = false;
+	protected $docComment;
 
-	public function stroke(): string
+	/**
+	 * Method constructor.
+	 * @param string $name
+	 * @param string $visibility
+	 */
+    public function __construct(string $name, string $visibility = Visibility::NONE)
+    {
+        $this->name = $name;
+        $this->visibility = new Visibility($visibility);
+
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
 	{
-		$methodString = $this->isAbstract()? 'abstract ' : ( '' . $this->isFinal? 'final ' : '' ) .
-			$this->visibility . ' ' .
-			$this->isStatic? ' static ' : '' .
-			'function ' .
-			$this->methodName . '(' ;
+		$docComment = clone ($this->docComment ?? new DocComment());
+        $indentation = new Indentation();
 
 		$parametersString = '';
-		foreach ($this->parameters as $parameter) {
-			$parametersString .= $parameter->stroke().', ';
+		foreach ($this->parameter as $parameter) {
+            $parametersString .= $parameter.', ';
+            $docComment->addMethodParameterComment($parameter);
 		}
 
-		$methodString .= rtrim($parametersString, ', '). ')' .
-			$this->returnType ? ':' . $this->returnType : ' { ' .
-			$this->body . "\n" . '}'
+		if ($this->returnType) {
+            $docComment->addMethodReturnTypeComment($this->returnType, $this->mightReturnNull);
+
+        }
+
+		return
+			$docComment .
+            $indentation .
+            ($this->isAbstract? 'abstract ' :  '' ) .
+            ($this->isFinal? 'final ' : '' ) .
+            $this->visibility .
+            ($this->isStatic? 'static ' : '') .
+			'function ' .
+			$this->name . '(' .
+			rtrim($parametersString, ', '). ')' .
+            ($this->returnType ? ': ' . ($this->mightReturnNull ? '?':'') . $this->returnType : '') .
+            "\n"  .
+            $indentation .'{' .
+			"\n" .
+			"\n" .
+            $indentation . '}' .
+			"\n"
 		;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getVisibility()
-	{
-		return $this->visibility;
-	}
-
-	/**
-	 * @param string $visibility
-	 */
-	public function setVisibility(string $visibility)
-	{
-		if (in_array($visibility, [Visibility::PUBLIC, Visibility::PRIVATE, Visibility::PROTECTED])) {
-			$this->visibility = $visibility;
-		}
-
-	}
-
-
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
 	/**
 	 * @return bool
@@ -85,6 +103,7 @@ class Method extends Component
 	public function setIsFinal(bool $isFinal)
 	{
 		$this->isFinal = $isFinal;
+        $this->isAbstract = false;
 	}
 
 	/**
@@ -101,6 +120,7 @@ class Method extends Component
 	public function setIsAbstract(bool $isAbstract)
 	{
 		$this->isAbstract = $isAbstract;
+		$this->isFinal = false;
 	}
 
 	/**
@@ -111,28 +131,14 @@ class Method extends Component
 		return $this->returnType;
 	}
 
-	/**
-	 * @param string $returnType
-	 */
-	public function setReturnType(string $returnType)
+    /**
+     * @param string $returnType
+     * @param bool $orNull
+     */
+	public function setReturnType(string $returnType, $orNull = false)
 	{
 		$this->returnType = $returnType;
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getBody()
-	{
-		return $this->body;
-	}
-
-	/**
-	 * @param string $body
-	 */
-	public function setBody(string $body)
-	{
-		$this->body = $body;
+		$this->mightReturnNull = $orNull;
 	}
 
 	/**
@@ -140,15 +146,38 @@ class Method extends Component
 	 */
 	public function getParameters(): array
 	{
-		return $this->parameters;
+		return $this->parameter;
 	}
 
-	/**
-	 * @param array $parameters
-	 */
+    /**
+     * @param MethodParameter $parameter
+     */
 	public function addParameter(MethodParameter $parameter)
 	{
-		$this->parameters[] = $parameter;
+		$this->parameter[] = $parameter;
 	}
 
+    /**
+     * @return mixed
+     */
+    public function getDocComment()
+    {
+        return $this->docComment ? $this->docComment->getComment() : null;
+    }
+
+    /**
+     * @param string $docComment
+     */
+    public function setDocComment(string $docComment)
+    {
+        $this->docComment = new DocComment($docComment);
+    }
+
+    /**
+     * @return string
+     */
+    public function getVisibility(): string
+    {
+        return $this->visibility->getName();
+    }
 }

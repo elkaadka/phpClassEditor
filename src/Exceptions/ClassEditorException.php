@@ -1,8 +1,8 @@
 <?php
 
-namespace Kanel\PhpEditor\Exceptions;
+namespace Kanel\ClassEditor\Exceptions;
 
-class PhpFileEditorException extends \Exception
+class ClassEditorException extends \Exception
 {
 	public function __construct($message = "", $code = 0, \Throwable $previous = null) {
 		parent::__construct($message, $code, $previous);
