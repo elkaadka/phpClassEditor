@@ -1,0 +1,24 @@
+{
+    "name": "kanel/phpfileseditor",
+    "description": "Edit php files by dynamically adding code",
+    "minimum-stability": "stable",
+    "require" : {
+        "php" : ">=7.0"
+    },
+    "repositories" : [ {
+        "type" : "composer",
+        "url" : "https://packagist.org/"
+    } ],
+    "require-dev" : {
+        "phpspec/phpspec": "^4.3"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "Kanel\\PhpEditor\\" : "src/"
+        }
+    },
+    "authors" : [ {
+        "name" : "Adil El Kanabi",
+        "email" : "adil.kanabi@gmail.com"
+    } ]
+}
