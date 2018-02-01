@@ -1,6 +1,6 @@
 <?php
 
-namespace Kanel\PhpEditor;
+namespace Kanel\PhpEditor\Components;
 
 class Visibility
 {
