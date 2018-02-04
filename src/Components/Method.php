@@ -103,7 +103,7 @@ class Method extends Component
 	public function setIsFinal(bool $isFinal)
 	{
 		$this->isFinal = $isFinal;
-        $this->isAbstract = false;
+        $this->isAbstract = $isFinal ? false: $this->isAbstract;
 	}
 
 	/**
@@ -120,7 +120,7 @@ class Method extends Component
 	public function setIsAbstract(bool $isAbstract)
 	{
 		$this->isAbstract = $isAbstract;
-		$this->isFinal = false;
+		$this->isFinal = $isAbstract ? false : $this->isFinal;
 	}
 
 	/**

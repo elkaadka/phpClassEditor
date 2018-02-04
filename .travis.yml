@@ -4,4 +4,6 @@ php:
   - '7.1'
 install:
   - composer install
-  
+
+script:
+  - vendor/bin/phpspec run --no-interaction

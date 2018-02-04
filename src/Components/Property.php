@@ -9,11 +9,12 @@ class Property extends Component
     protected $defaultValue;
     protected $isStatic = false;
 
-    public function __construct(string $name, string $visibility = null, string $defalutValue = null)
+    public function __construct(string $name, string $visibility = null, string $defalutValue = null, bool $isStatic = false)
     {
         $this->name = $name;
         $this->visibility = new Visibility($visibility);
         $this->defaultValue = $defalutValue? new Value($defalutValue) : null;
+        $this->isStatic = $isStatic;
     }
 
     public function __toString(): string
@@ -37,14 +38,6 @@ class Property extends Component
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name)
-    {
-        $this->name = $name;
     }
 
     /**

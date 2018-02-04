@@ -15,7 +15,6 @@ class Type extends Component
     const INT = 'int';
     const STDCLASS = 'stdClass';
     const STRING = 'string';
-    const CLASSNAME = 'class';
     const NONE = null;
 
     public function __construct(string $type = self::NONE)
