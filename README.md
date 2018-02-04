@@ -1,8 +1,11 @@
 # phpClassEditor
 
+![build](https://travis-ci.org/elkaadka/phpClassEditor.svg?branch=master)
+
+
 This library allows you to dynamically edit php class files by injecting code into them
 
-#How it works
+# How it works
 
 Important : unless you call the save method, the file won't be changed
 Each function that edits the php class file return the new content of the file (after adding properties/methods)
